@@ -6,5 +6,8 @@ class Window(Frame):
         Frame.__init__(self, master)
         self.master = master
 root = Tk()
-app = Window()
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
+root.geometry(f'{width}x{height}')
+app = Window(root)
 root.mainloop()
