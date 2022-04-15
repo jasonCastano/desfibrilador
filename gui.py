@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter.font import BOLD, Font
 from datetime import datetime
 from datetime import date
 import math
@@ -20,8 +21,17 @@ class Window(Frame):
         self.date_label = Label(self,bg="#353231",fg="#EEE110")
         self.date_label.place(x=math.floor(width*0.7), y=math.floor(height*0.01))
         self.date_now()
-        data_frame = Frame(self, bg = "#A8A5A4", width=width, height=math.floor(height*0.25))
+        data_frame_height = math.floor(height*0.25)
+        data_frame = Frame(self, bg = "#A8A5A4", width=width, height=data_frame_height)
         data_frame.place(x=0,y=math.floor(height*0.09))
+        data_small_label_font = Font(self.master, size=20, weight=BOLD)
+        fc_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="FC", font=data_small_label_font)
+        fc_label.place(x=width*0.05,y=data_frame_height*0.01)
+        data_big_label_font = Font(self.master, size=80, weight=BOLD)
+        self.lpm_value_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="80", font=data_big_label_font)
+        self.lpm_value_label.place(x=width*0.05,y=data_frame_height*0.2)
+        lpm_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="lpm", font=data_small_label_font)
+        lpm_label.place(x=width*0.05,y=data_frame_height*0.8)
     def time_now(self):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
