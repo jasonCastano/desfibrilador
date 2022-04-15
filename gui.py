@@ -21,7 +21,7 @@ class Window(Frame):
         self.date_label.place(x=math.floor(width*0.7), y=math.floor(height*0.01))
         self.date_now()
         data_frame = Frame(self, bg = "#A8A5A4", width=width, height=math.floor(height*0.25))
-        data_frame.place(x=0,y=math.floor(height*0.05))
+        data_frame.place(x=0,y=math.floor(height*0.09))
     def time_now(self):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
