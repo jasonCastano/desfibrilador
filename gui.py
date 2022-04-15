@@ -56,10 +56,10 @@ class Window(Frame):
         self.sinc_value.place(x=math.floor(width*0.12*0.22),y=math.floor(data_frame_height*0.25*0.01))
 
         descargas_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="DESCARGAS", font=data_small_label_font)
-        descargas_label.place(x=math.floor(width*0.85),y=math.floor(data_frame_height*0.01))
+        descargas_label.place(x=math.floor(width*0.81),y=math.floor(data_frame_height*0.01))
         descargas_frame = Frame(data_frame, bg = "#827F7D", width=math.floor(width*0.12), height=math.floor(data_frame_height*0.6))
         descargas_frame.place(x=math.floor(width*0.82),y=math.floor(data_frame_height*0.2))
-        self.descargas_value = Label(sinc_frame, bg="#827F7D",fg="#34EB13", text="3", font=data_big_label_font)
+        self.descargas_value = Label(descargas_frame, bg="#827F7D",fg="#34EB13", text="3", font=data_big_label_font)
         self.descargas_value.place(x=math.floor(width*0.12*0.22),y=math.floor(data_frame_height*0.25*0.01))
         
     def time_now(self):
