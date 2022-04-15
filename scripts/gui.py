@@ -1,8 +1,11 @@
+#!/usr/bin/env python3
 from tkinter import *
 from tkinter.font import BOLD, Font
 from datetime import datetime
 from datetime import date
 import math
+import rospy
+from std_msgs.msg import Int8, String
 class Window(Frame):
 
     def __init__(self, master=None):
@@ -30,7 +33,7 @@ class Window(Frame):
         fc_label.place(x=math.floor(width*0.05),y=math.floor(data_frame_height*0.01))
         
         data_big_label_font = Font(self.master, size=40, weight=BOLD)
-        self.lpm_value = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="80", font=data_big_label_font)
+        self.lpm_value = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="0", font=data_big_label_font)
         self.lpm_value.place(x=math.floor(width*0.05),y=math.floor(data_frame_height*0.2))
         
         lpm_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="lpm", font=data_small_label_font)
@@ -38,28 +41,28 @@ class Window(Frame):
         
         modo_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="MODO", font=data_small_label_font)
         modo_label.place(x=math.floor(width*0.25),y=math.floor(data_frame_height*0.01))
-        self.modo_value = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="M", font=data_big_label_font)
+        self.modo_value = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="", font=data_big_label_font)
         self.modo_value.place(x=math.floor(width*0.25),y=math.floor(data_frame_height*0.2))
         
         carga_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="CARGA", font=data_small_label_font)
         carga_label.place(x=math.floor(width*0.45),y=math.floor(data_frame_height*0.01))
         carga_frame = Frame(data_frame, bg = "#827F7D", width=math.floor(width*0.25), height=math.floor(data_frame_height*0.6))
         carga_frame.place(x=math.floor(width*0.38),y=math.floor(data_frame_height*0.2))
-        self.carga_value = Label(carga_frame, bg="#827F7D",fg="#34EB13", text="260J", font=data_big_label_font)
+        self.carga_value = Label(carga_frame, bg="#827F7D",fg="#34EB13", text="0", font=data_big_label_font)
         self.carga_value.place(x=math.floor(width*0.15*0.22),y=math.floor(data_frame_height*0.25*0.01))
         
         sinc_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="SINC", font=data_small_label_font)
         sinc_label.place(x=math.floor(width*0.71),y=math.floor(data_frame_height*0.01))
         sinc_frame = Frame(data_frame, bg = "#827F7D", width=math.floor(width*0.12), height=math.floor(data_frame_height*0.6))
         sinc_frame.place(x=math.floor(width*0.68),y=math.floor(data_frame_height*0.2))
-        self.sinc_value = Label(sinc_frame, bg="#827F7D",fg="#34EB13", text="R", font=data_big_label_font)
+        self.sinc_value = Label(sinc_frame, bg="#827F7D",fg="#34EB13", text="", font=data_big_label_font)
         self.sinc_value.place(x=math.floor(width*0.12*0.22),y=math.floor(data_frame_height*0.25*0.01))
 
         descargas_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="DESCARGAS", font=data_small_label_font)
         descargas_label.place(x=math.floor(width*0.81),y=math.floor(data_frame_height*0.01))
         descargas_frame = Frame(data_frame, bg = "#827F7D", width=math.floor(width*0.12), height=math.floor(data_frame_height*0.6))
         descargas_frame.place(x=math.floor(width*0.82),y=math.floor(data_frame_height*0.2))
-        self.descargas_value = Label(descargas_frame, bg="#827F7D",fg="#34EB13", text="3", font=data_big_label_font)
+        self.descargas_value = Label(descargas_frame, bg="#827F7D",fg="#34EB13", text="0", font=data_big_label_font)
         self.descargas_value.place(x=math.floor(width*0.12*0.22),y=math.floor(data_frame_height*0.25*0.01))
         
     def time_now(self):
@@ -72,9 +75,33 @@ class Window(Frame):
         current_date = now.strftime("%b-%d-%Y")
         self.date_label.config(text=current_date)
         self.date_label.after(3600000,self.date_now)
+
+def lpm_data(data):
+    global app
+    app.lpm_value.config(text=str(data.data))
+
+def modo_data(data):
+    global app
+    app.modo_value.config(text=data.data)
+def carga_data(data):
+    global app
+    app.carga_value.config(text=data.data)
+def sinc_data(data):
+    global app
+    app.sinc_value.config(text=data.data)
+def descargas_data(data):
+    global app
+    app.descargas_value.config(text=str(data.data))
 root = Tk()
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
 root.geometry(f'{width}x{height}')
 app = Window(root)
+#ROS
+rospy.init_node("gui_node", anonymous=False)
+rospy.Subscriber("/desfibrilador/lpm", Int8, lpm_data)
+rospy.Subscriber("/desfibrilador/modo",String,modo_data)
+rospy.Subscriber("/desfibrilador/carga",String,carga_data)
+rospy.Subscriber("/desfibrilador/sinc",String,sinc_data)
+rospy.Subscriber("/desfibrilador/descargas",Int8,descargas_data)
 root.mainloop()
