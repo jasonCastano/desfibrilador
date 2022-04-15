@@ -32,6 +32,10 @@ class Window(Frame):
         self.lpm_value_label.place(x=width*0.05,y=data_frame_height*0.2)
         lpm_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="lpm", font=data_small_label_font)
         lpm_label.place(x=width*0.05,y=data_frame_height*0.8)
+        modo_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="MODO", font=data_small_label_font)
+        modo_label.place(x=width*0.25,y=data_frame_height*0.01)
+        self.modo_value_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="M", font=data_big_label_font)
+        self.modo_value_label.place(x=width*0.25,y=data_frame_height*0.2)
     def time_now(self):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
