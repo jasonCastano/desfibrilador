@@ -25,29 +25,43 @@ class Window(Frame):
         data_frame = Frame(self, bg = "#A8A5A4", width=width, height=data_frame_height)
         data_frame.place(x=0,y=math.floor(height*0.09))
         data_small_label_font = Font(self.master, size=10, weight=BOLD)
+
         fc_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="FC", font=data_small_label_font)
         fc_label.place(x=math.floor(width*0.05),y=math.floor(data_frame_height*0.01))
+        
         data_big_label_font = Font(self.master, size=40, weight=BOLD)
-        self.lpm_value_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="80", font=data_big_label_font)
-        self.lpm_value_label.place(x=math.floor(width*0.05),y=math.floor(data_frame_height*0.2))
+        self.lpm_value = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="80", font=data_big_label_font)
+        self.lpm_value.place(x=math.floor(width*0.05),y=math.floor(data_frame_height*0.2))
+        
         lpm_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="lpm", font=data_small_label_font)
         lpm_label.place(x=math.floor(width*0.05),y=math.floor(data_frame_height*0.8))
+        
         modo_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="MODO", font=data_small_label_font)
         modo_label.place(x=math.floor(width*0.25),y=math.floor(data_frame_height*0.01))
-        self.modo_value_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="M", font=data_big_label_font)
-        self.modo_value_label.place(x=math.floor(width*0.25),y=math.floor(data_frame_height*0.2))
+        self.modo_value = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="M", font=data_big_label_font)
+        self.modo_value.place(x=math.floor(width*0.25),y=math.floor(data_frame_height*0.2))
+        
         carga_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="CARGA", font=data_small_label_font)
         carga_label.place(x=math.floor(width*0.45),y=math.floor(data_frame_height*0.01))
         carga_frame = Frame(data_frame, bg = "#827F7D", width=math.floor(width*0.25), height=math.floor(data_frame_height*0.6))
         carga_frame.place(x=math.floor(width*0.38),y=math.floor(data_frame_height*0.2))
-        self.carga_value_label = Label(carga_frame, bg="#827F7D",fg="#34EB13", text="260J", font=data_big_label_font)
-        self.carga_value_label.place(x=math.floor(width*0.15*0.22),y=math.floor(data_frame_height*0.25*0.01))
+        self.carga_value = Label(carga_frame, bg="#827F7D",fg="#34EB13", text="260J", font=data_big_label_font)
+        self.carga_value.place(x=math.floor(width*0.15*0.22),y=math.floor(data_frame_height*0.25*0.01))
+        
         sinc_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="SINC", font=data_small_label_font)
         sinc_label.place(x=math.floor(width*0.71),y=math.floor(data_frame_height*0.01))
         sinc_frame = Frame(data_frame, bg = "#827F7D", width=math.floor(width*0.12), height=math.floor(data_frame_height*0.6))
         sinc_frame.place(x=math.floor(width*0.68),y=math.floor(data_frame_height*0.2))
-        self.sinc_value_label = Label(sinc_frame, bg="#827F7D",fg="#34EB13", text="R", font=data_big_label_font)
-        self.sinc_value_label.place(x=math.floor(width*0.12*0.22),y=math.floor(data_frame_height*0.25*0.01))
+        self.sinc_value = Label(sinc_frame, bg="#827F7D",fg="#34EB13", text="R", font=data_big_label_font)
+        self.sinc_value.place(x=math.floor(width*0.12*0.22),y=math.floor(data_frame_height*0.25*0.01))
+
+        descargas_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="DESCARGAS", font=data_small_label_font)
+        descargas_label.place(x=math.floor(width*0.85),y=math.floor(data_frame_height*0.01))
+        descargas_frame = Frame(data_frame, bg = "#827F7D", width=math.floor(width*0.12), height=math.floor(data_frame_height*0.6))
+        descargas_frame.place(x=math.floor(width*0.82),y=math.floor(data_frame_height*0.2))
+        self.descargas_value = Label(sinc_frame, bg="#827F7D",fg="#34EB13", text="3", font=data_big_label_font)
+        self.descargas_value.place(x=math.floor(width*0.12*0.22),y=math.floor(data_frame_height*0.25*0.01))
+        
     def time_now(self):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
