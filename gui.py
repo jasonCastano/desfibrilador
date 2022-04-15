@@ -44,6 +44,10 @@ class Window(Frame):
         self.carga_value_label.place(x=math.floor(width*0.15*0.22),y=math.floor(data_frame_height*0.25*0.01))
         sinc_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="SINC", font=data_small_label_font)
         sinc_label.place(x=math.floor(width*0.7),y=math.floor(data_frame_height*0.01))
+        sinc_frame = Frame(data_frame, bg = "#827F7D", width=math.floor(width*0.12), height=math.floor(data_frame_height*0.6))
+        sinc_frame.place(x=math.floor(width*0.68),y=math.floor(data_frame_height*0.2))
+        self.sinc_value_label = Label(sinc_frame, bg="#827F7D",fg="#34EB13", text="260J", font=data_big_label_font)
+        self.sinc_value_label.place(x=math.floor(width*0.12*0.22),y=math.floor(data_frame_height*0.25*0.01))
     def time_now(self):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
