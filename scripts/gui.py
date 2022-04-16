@@ -3,9 +3,15 @@ from tkinter import *
 from tkinter.font import BOLD, Font
 from datetime import datetime
 from datetime import date
+
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+import numpy as np
+
 import math
 import rospy
-from std_msgs.msg import Int8, String
+from std_msgs.msg import Int16, String
 class Window(Frame):
 
     def __init__(self, master=None):
@@ -65,6 +71,28 @@ class Window(Frame):
         self.descargas_value = Label(descargas_frame, bg="#827F7D",fg="#34EB13", text="0", font=data_big_label_font)
         self.descargas_value.place(x=math.floor(width*0.12*0.22),y=math.floor(data_frame_height*0.25*0.01))
         
+        ecg_label = Label(self, bg="#353231",fg="#34EB13", text="ECG", font=data_small_label_font)
+        ecg_label.place(x=math.floor(width*0.01),y=math.floor(height*0.35))
+        
+        self.fig, self.ax = plt.subplots(facecolor="#353231")
+        self.ax.spines["top"].set_visible(False)
+        self.ax.spines["right"].set_visible(False)
+        self.ax.spines["bottom"].set_visible(False)
+        self.ax.spines["left"].set_visible(False)
+        self.ax.set_xticks([])
+        self.ax.set_yticks([])
+        self.ax.set_facecolor("#353231")
+        global t
+        global ecg_data
+        self.line, = self.ax.plot(t, ecg_data, color="#34EB13", linestyle="solid", linewidth=3)
+
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self)
+        self.canvas.get_tk_widget().config(width=width, height=math.floor(height*0.25))
+        self.canvas.get_tk_widget().place(x=math.floor(width*0.01),y=math.floor(height*0.38))
+        
+        self.atencion_label = Label(self, bg="#353231",fg="#E30E0E", text="", font=data_small_label_font)
+        self.atencion_label.place(x=math.floor(width*0.01),y=math.floor(height*0.7))
+
     def time_now(self):
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
@@ -82,7 +110,14 @@ def lpm_data(data):
 
 def modo_data(data):
     global app
-    app.modo_value.config(text=data.data)
+    m = data.data
+    app.modo_value.config(text=m)
+    if m == "M":
+        app.atencion_label.config(text="")
+    elif m == "D":
+        app.atencion_label.config(text="ATENCIÓN ANTE UNA ARRITMIA DE CARÁCTER VENTRICULAR")
+    elif m == "S":
+        app.atencion_label.config(text="ATENCIÓN ANTE UNA ARRITMIA AURICULAR")
 def carga_data(data):
     global app
     app.carga_value.config(text=data.data)
@@ -92,6 +127,32 @@ def sinc_data(data):
 def descargas_data(data):
     global app
     app.descargas_value.config(text=str(data.data))
+
+def animate(i):
+    global app
+    global ecg_data
+    global t
+    app.line.set_ydata(ecg_data)
+    app.line.set_xdata(t)
+    return app.line,
+
+def ecg_plot(data):
+    #global ani
+    global app
+    global ecg_data
+    #print(data.data)
+    ecg_data = np.delete(ecg_data,0)
+    ecg_data = np.append(ecg_data,data.data)
+    app.ax.clear()
+    app.line = app.ax.plot(t, ecg_data, color="#34EB13", linestyle="solid", linewidth=3)
+    #ani = animation.FuncAnimation(app.fig, animate, interval=1, blit=True)
+    app.ax.set_xticks([])                                                  
+    app.ax.set_yticks([]) 
+    app.canvas.draw()
+
+t = np.arange(0,5,0.004)
+ecg_data = np.zeros((1250))
+#ecg_data = np.sin(t)
 root = Tk()
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
@@ -99,9 +160,10 @@ root.geometry(f'{width}x{height}')
 app = Window(root)
 #ROS
 rospy.init_node("gui_node", anonymous=False)
-rospy.Subscriber("/desfibrilador/lpm", Int8, lpm_data)
+rospy.Subscriber("/desfibrilador/lpm", Int16, lpm_data)
 rospy.Subscriber("/desfibrilador/modo",String,modo_data)
 rospy.Subscriber("/desfibrilador/carga",String,carga_data)
 rospy.Subscriber("/desfibrilador/sinc",String,sinc_data)
-rospy.Subscriber("/desfibrilador/descargas",Int8,descargas_data)
+rospy.Subscriber("/desfibrilador/descargas",Int16,descargas_data)
+rospy.Subscriber("/desfibrilador/ecg_signal",Int16,ecg_plot)
 root.mainloop()
