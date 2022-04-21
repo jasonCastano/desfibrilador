@@ -138,7 +138,7 @@ def animate():
     
     app.line.set_data(t,ecg_data)
 
-    #return app.line,
+    return app.line,
 
 def ecg_plot(data):
     #global ani
