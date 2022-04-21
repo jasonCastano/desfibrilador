@@ -129,14 +129,14 @@ def descargas_data(data):
     global app
     app.descargas_value.config(text=str(data.data))
 
-def animate(t,ecg_data,line):
-    #global app
-    #global ecg_data
-    #global t
+def animate():
+    global app
+    global ecg_data
+    global t
     #app.line.set_ydata(ecg_data)
     #app.line.set_xdata(t)
     
-    line.set_data(t,ecg_data)
+    app.line.set_data(t,ecg_data)
 
     #return app.line,
 
@@ -150,7 +150,7 @@ def ecg_plot(data):
     #app.ax.clear()
     #app.line = app.ax.plot(t, ecg_data, color="#34EB13", linestyle="solid", linewidth=3)
     
-    ani = animation.FuncAnimation(app.fig, animate, fargs=(t,ecg_dat,app.line),interval=100, blit=False)
+    ani = animation.FuncAnimation(app.fig, animate,interval=100, blit=False)
     #app.ax.set_xticks([])                                                  
     #app.ax.set_yticks([]) 
     app.canvas.draw()
