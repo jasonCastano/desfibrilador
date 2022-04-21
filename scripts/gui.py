@@ -12,6 +12,7 @@ import numpy as np
 import math
 import rospy
 from std_msgs.msg import Int16, String
+from threading import Thread
 class Window(Frame):
 
     def __init__(self, master=None):
@@ -128,13 +129,16 @@ def descargas_data(data):
     global app
     app.descargas_value.config(text=str(data.data))
 
-def animate(i):
-    global app
-    global ecg_data
-    global t
-    app.line.set_ydata(ecg_data)
-    app.line.set_xdata(t)
-    return app.line,
+def animate(t,ecg_data,line):
+    #global app
+    #global ecg_data
+    #global t
+    #app.line.set_ydata(ecg_data)
+    #app.line.set_xdata(t)
+    
+    line.set_data(t,ecg_data)
+
+    #return app.line,
 
 def ecg_plot(data):
     #global ani
@@ -143,11 +147,12 @@ def ecg_plot(data):
     #print(data.data)
     ecg_data = np.delete(ecg_data,0)
     ecg_data = np.append(ecg_data,data.data)
-    app.ax.clear()
-    app.line = app.ax.plot(t, ecg_data, color="#34EB13", linestyle="solid", linewidth=3)
-    #ani = animation.FuncAnimation(app.fig, animate, interval=1, blit=True)
-    app.ax.set_xticks([])                                                  
-    app.ax.set_yticks([]) 
+    #app.ax.clear()
+    #app.line = app.ax.plot(t, ecg_data, color="#34EB13", linestyle="solid", linewidth=3)
+    
+    ani = animation.FuncAnimation(app.fig, animate, fargs=(t,ecg_dat,app.line),interval=100, blit=False)
+    #app.ax.set_xticks([])                                                  
+    #app.ax.set_yticks([]) 
     app.canvas.draw()
 
 t = np.arange(0,5,0.004)
