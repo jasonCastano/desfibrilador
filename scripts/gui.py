@@ -55,7 +55,7 @@ class Window(Frame):
         carga_frame = Frame(data_frame, bg = "#827F7D", width=math.floor(width*0.25), height=math.floor(data_frame_height*0.6))
         carga_frame.place(x=math.floor(width*0.38),y=math.floor(data_frame_height*0.2))
         self.carga_value = Label(carga_frame, bg="#827F7D",fg="#34EB13", text="0", font=data_big_label_font)
-        self.carga_value.place(x=math.floor(width*0.38 + (width*0.25*0.25)),y=math.floor(data_frame_height*0.2 + (data_frame_height*0.6*0.5))
+        self.carga_value.place(x=math.floor(width*0.38 + (width*0.25*0.25)),y=math.floor(data_frame_height*0.2 + (data_frame_height*0.6*0.5)))
         
         sinc_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="SINC", font=data_small_label_font)
         sinc_label.place(x=math.floor(width*0.71),y=math.floor(data_frame_height*0.01))
