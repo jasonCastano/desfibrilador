@@ -12,7 +12,6 @@ import numpy as np
 import math
 import rospy
 from std_msgs.msg import Int16, String
-from threading import Thread
 class Window(Frame):
 
     def __init__(self, master=None):
@@ -34,12 +33,12 @@ class Window(Frame):
         data_frame_height = math.floor(height*0.25)
         data_frame = Frame(self, bg = "#A8A5A4", width=width, height=data_frame_height)
         data_frame.place(x=0,y=math.floor(height*0.09))
-        data_small_label_font = Font(self.master, size=10, weight=BOLD)
+        data_small_label_font = Font(self.master, size=20, weight=BOLD)
 
         fc_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="FC", font=data_small_label_font)
         fc_label.place(x=math.floor(width*0.05),y=math.floor(data_frame_height*0.01))
         
-        data_big_label_font = Font(self.master, size=40, weight=BOLD)
+        data_big_label_font = Font(self.master, size=50, weight=BOLD)
         self.lpm_value = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="0", font=data_big_label_font)
         self.lpm_value.place(x=math.floor(width*0.05),y=math.floor(data_frame_height*0.2))
         
@@ -132,32 +131,29 @@ def descargas_data(data):
 def animate():
     global app
     global ecg_data
-    global t
-    #app.line.set_ydata(ecg_data)
+    #global t
+    app.line.set_ydata(ecg_data)
     #app.line.set_xdata(t)
     
-    app.line.set_data(t,ecg_data)
+    #app.line.set_data(t,ecg_data)
 
     return app.line,
 
 def ecg_plot(data):
-    #global ani
     global app
     global ecg_data
-    #print(data.data)
     ecg_data = np.delete(ecg_data,0)
     ecg_data = np.append(ecg_data,data.data)
-    #app.ax.clear()
-    #app.line = app.ax.plot(t, ecg_data, color="#34EB13", linestyle="solid", linewidth=3)
-    
-    ani = animation.FuncAnimation(app.fig, animate,interval=100, blit=False)
-    #app.ax.set_xticks([])                                                  
-    #app.ax.set_yticks([]) 
+    app.ax.clear()
+    app.line = app.ax.plot(t, ecg_data, color="#34EB13", linestyle="solid", linewidth=3)
+    #app.line.set_data(t,ecg_data)
+    #ani = animation.FuncAnimation(app.fig,animate,interval=1, blit=True)
+    app.ax.set_xticks([])                                                  
+    app.ax.set_yticks([]) 
     app.canvas.draw()
 
 t = np.arange(0,5,0.004)
 ecg_data = np.zeros((1250))
-#ecg_data = np.sin(t)
 root = Tk()
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
