@@ -40,7 +40,7 @@ class Window(Frame):
         
         data_big_label_font = Font(self.master, size=50, weight=BOLD)
         self.lpm_value = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="0", font=data_big_label_font)
-        self.lpm_value.place(x=math.floor(width*0.05),y=math.floor(data_frame_height*0.2))
+        self.lpm_value.place(x=math.floor(width*0.05),y=math.floor(data_frame_height*0.3))
         
         lpm_label = Label(data_frame, bg="#A8A5A4",fg="#34EB13", text="lpm", font=data_small_label_font)
         lpm_label.place(x=math.floor(width*0.05),y=math.floor(data_frame_height*0.8))
