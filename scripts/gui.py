@@ -123,7 +123,11 @@ def carga_data(data):
     app.carga_value.config(text=data.data)
 def sinc_data(data):
     global app
-    app.sinc_value.config(text=data.data)
+    if(app.modo_value.cget("text") == "S"):
+        if(app.sinc_value.cget("text") != "R"):
+            app.sinc_value.config(text=data.data)
+        else:
+            app.sinc_value.config(text="")
 def descargas_data(data):
     global app
     app.descargas_value.config(text=str(data.data))
