@@ -11,7 +11,10 @@ import numpy as np
 
 import math
 import rospy
-from std_msgs.msg import Int16, String
+from std_msgs.msg import Int16, String, Float32
+import time
+import continuous_threading
+
 class Window(Frame):
 
     def __init__(self, master=None):
@@ -123,11 +126,28 @@ def carga_data(data):
     app.carga_value.config(text=data.data)
 def sinc_data(data):
     global app
+    def tiempo_R():
+        t0 = time.time()
+        while(time.time() - t0 < 0.02):
+            continue
+        app.sinc_value.config(text="")
+
     if(app.modo_value.cget("text") == "S"):
+        """
         if(app.sinc_value.cget("text") != "R"):
             app.sinc_value.config(text=data.data)
         else:
             app.sinc_value.config(text="")
+        """
+        app.sinc_value.config(text=data.data)
+        R_paralelo = continuous_threading.Thread(target=tiempo_R)
+        R_paralelo.start()
+        """
+        t0 = time.time()
+        while(time.time() - t0 < 0.01):
+            continue
+        app.sinc_value.config(text="")
+        """
 def descargas_data(data):
     global app
     app.descargas_value.config(text=str(data.data))
@@ -143,11 +163,28 @@ def animate():
 
     return app.line,
 
+def update_plot():
+    print("ACTUALIZACION DE PLOT")
+    global app
+    global ecg_data
+    try:
+        app.ax.clear()
+        app.line = app.ax.plot(t, ecg_data, color="#34EB13", linestyle="solid", linewidth=3)
+        #app.line.set_data(t,ecg_data)
+        #ani = animation.FuncAnimation(app.fig,animate,interval=1, blit=True)
+        app.ax.set_xticks([])                                                  
+        app.ax.set_yticks([]) 
+        app.canvas.draw()
+    except:
+        pass
+
 def ecg_plot(data):
+    print("datos de ECG")
     global app
     global ecg_data
     ecg_data = np.delete(ecg_data,0)
     ecg_data = np.append(ecg_data,data.data)
+    """
     app.ax.clear()
     app.line = app.ax.plot(t, ecg_data, color="#34EB13", linestyle="solid", linewidth=3)
     #app.line.set_data(t,ecg_data)
@@ -155,9 +192,9 @@ def ecg_plot(data):
     app.ax.set_xticks([])                                                  
     app.ax.set_yticks([]) 
     app.canvas.draw()
-
-t = np.arange(0,5,0.004)
-ecg_data = np.zeros((1250))
+    """
+t = np.arange(0,5,0.01)
+ecg_data = np.zeros((500))
 root = Tk()
 width = root.winfo_screenwidth()
 height = root.winfo_screenheight()
@@ -170,5 +207,7 @@ rospy.Subscriber("/desfibrilador/modo",String,modo_data)
 rospy.Subscriber("/desfibrilador/carga",String,carga_data)
 rospy.Subscriber("/desfibrilador/sinc",String,sinc_data)
 rospy.Subscriber("/desfibrilador/descargas",Int16,descargas_data)
-rospy.Subscriber("/desfibrilador/ecg_signal",Int16,ecg_plot)
+rospy.Subscriber("/desfibrilador/ecg_signal",Float32,ecg_plot)
+proceso_paralelo = continuous_threading.ContinuousThread(target=update_plot)
+proceso_paralelo.start()
 root.mainloop()
