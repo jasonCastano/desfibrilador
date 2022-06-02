@@ -45,7 +45,7 @@ def modo_data(data):
         descarga = True
         new_mode_s = True
         t0 = 0.0
-        print("MODO S")
+        #print("MODO S")
     else:
         descarga = False
 
@@ -75,10 +75,10 @@ while True:
                 if(first_R == False and new_mode_s == True):
                     first_R = True
                     new_mode_s = False
-                    print("FIRST R")
+                    #print("FIRST R")
                 if(sec_5 == True and second_R == False):
                     second_R = True
-                    print("SECOND R")
+                    #print("SECOND R")
         else:
             ecg_msg = Float32()
             ecg_msg.data = float(ecg_data)
@@ -89,15 +89,15 @@ while True:
         if(time.time() - t0 > 5 and sec_5 == False):
             sec_5 = True
             en_ms_20 = True
-            print(en_ms_20)
+            #print(en_ms_20)
         if(sec_5 == True and second_R == True and en_ms_20 == True):
             t0 = time.time()
             en_ms_20 = False
             descarga = True
-            print("TIEMPO PARA 20 MS")
+            #print("TIEMPO PARA 20 MS")
         if(time.time() - t0 > 0.02 and second_R == True and descarga == True):
             descarga_pub.publish(descarga_msg)
-            print("DESCARGA")
+            #print("DESCARGA")
             descarga = False
 
     except ValueError:

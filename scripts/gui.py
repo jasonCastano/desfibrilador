@@ -164,7 +164,7 @@ def animate():
     return app.line,
 
 def update_plot():
-    print("ACTUALIZACION DE PLOT")
+    #print("ACTUALIZACION DE PLOT")
     global app
     global ecg_data
     try:
@@ -179,7 +179,7 @@ def update_plot():
         pass
 
 def ecg_plot(data):
-    print("datos de ECG")
+    #print("datos de ECG")
     global app
     global ecg_data
     ecg_data = np.delete(ecg_data,0)
